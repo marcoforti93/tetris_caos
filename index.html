@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TETRIS CAOS por Marco Forti</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game-container">
+    <!-- Painel Esquerdo -->
+    <div class="sidebar left">
+      <div class="header-box">
+        <h1>TETRIS CAOS</h1>
+        <p class="dev-name">Dev: <strong>Marco Forti</strong></p>
+      </div>
+      
+      <div class="player-input-box">
+        <label for="player-name">Seu Nome:</label>
+        <input type="text" id="player-name" placeholder="Digite seu nome" maxlength="12" value="Jogador 1">
+        <button id="start-btn">INICIAR JOGO</button>
+      </div>
+
+      <div class="info-box">
+        <p>Pontos: <span id="score">0</span></p>
+        <p>Nível: <span id="level">1</span></p>
+        <p>Próximo Nível: <span id="timer">15</span>s</p>
+        <p>Linhas: <span id="lines">0</span></p>
+        <p>Status: <span id="status-effect" class="status-normal">NORMAL</span></p>
+      </div>
+
+      <div class="next-box">
+        <h3>Próxima Peça</h3>
+        <canvas id="next" width="100" height="100"></canvas>
+      </div>
+    </div>
+
+    <!-- Área Jogável Expandida até as bordas exatas -->
+    <div class="canvas-wrapper" id="canvas-wrapper">
+      <canvas id="tetris"></canvas>
+    </div>
+
+    <!-- Painel Direito -->
+    <div class="sidebar right">
+      <h2>🏆 Recordes Top 5</h2>
+      <ol id="high-scores-list"></ol>
+      
+      <div class="controls-info">
+        <h3>🔥 Desafios Ativos</h3>
+        <p>🥴 <strong>Bêbada:</strong> Desobedece teclas!</p>
+        <p>🔄 <strong>Invertida:</strong> Controles trocados!</p>
+        <p>⚡ <strong>Turbo:</strong> Queda 3x rápida!</p>
+        <p>🌀 <strong>Mutante:</strong> Muta a cada linha!</p>
+        <p>🐘 <strong>Gigante:</strong> Bloco massivo 3x3!</p>
+        <p>🔨 <strong>Deformada:</strong> Formato bizarro!</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
