@@ -2,39 +2,12 @@ const canvas = document.getElementById('tetris');
 const context = canvas.getContext('2d');
 const nextCanvas = document.getElementById('next');
 const nextContext = nextCanvas.getContext('2d');
-const wrapper = document.getElementById('canvas-wrapper');
 
-let COLS = 20;
-let ROWS = 20;
-let blockSize = 30;
-let arena = [];
+const COLS = 20;
+const ROWS = 20;
+const blockSize = 28;
 
-function resizeCanvas() {
-  const w = wrapper.clientWidth;
-  const h = wrapper.clientHeight;
-  
-  blockSize = Math.floor(w / COLS);
-  if (blockSize < 10) blockSize = 10;
-
-  ROWS = Math.floor(h / blockSize);
-
-  canvas.width = COLS * blockSize;
-  canvas.height = ROWS * blockSize;
-
-  const newArena = createMatrix(COLS, ROWS);
-  if (arena.length) {
-    for (let y = 0; y < Math.min(arena.length, ROWS); y++) {
-      for (let x = 0; x < Math.min(arena[y].length, COLS); x++) {
-        newArena[ROWS - 1 - y][x] = arena[arena.length - 1 - y][x];
-      }
-    }
-  }
-  arena = newArena;
-
-  context.setTransform(1, 0, 0, 1, 0, 0); 
-  context.scale(blockSize, blockSize);
-}
-
+context.scale(blockSize, blockSize);
 nextContext.scale(25, 25);
 
 // Web Audio API
@@ -63,8 +36,8 @@ const PIECES = {
   'Z': [[5, 5, 0], [0, 5, 5], [0, 0, 0]],
   'S': [[0, 6, 6], [6, 6, 0], [0, 0, 0]],
   'T': [[0, 7, 0], [7, 7, 7], [0, 0, 0]],
-  'G': [[4, 4, 4], [4, 4, 4], [4, 4, 4]], // Peça Gigante
-  'D': [[5, 0, 5], [0, 5, 0], [5, 5, 0]]  // Novo Desafio: Peça Deformada (Assimétrica)
+  'G': [[4, 4, 4], [4, 4, 4], [4, 4, 4]], 
+  'D': [[5, 0, 5], [0, 5, 0], [5, 5, 0]]  
 };
 
 const COLORS = [
@@ -83,6 +56,8 @@ function createMatrix(w, h) {
   while (h--) matrix.push(new Array(w).fill(0));
   return matrix;
 }
+
+const arena = createMatrix(COLS, ROWS);
 
 // Sistema de Partículas
 let particles = [];
@@ -126,7 +101,6 @@ const player = {
   score: 0,
   level: 1,
   lines: 0,
-  // Modificadores de Desafios
   isDrunk: false,
   isInverted: false,
   isTurbo: false,
@@ -139,14 +113,8 @@ const player = {
 let dropCounter = 0;
 let dropInterval = 1000;
 let lastTime = 0;
-let levelTimer = 15;
+let levelTimer = 30; // Atualizado para 30 segundos
 let timerInterval = null;
-
-function triggerShake() {
-  wrapper.classList.remove('shake');
-  void wrapper.offsetWidth;
-  wrapper.classList.add('shake');
-}
 
 function getRandomPiece() {
   const pieces = 'ILJOTSZ';
@@ -295,7 +263,6 @@ function playerHardDrop() {
   }
   player.pos.y--;
   merge(arena, player);
-  triggerShake();
   playSound(150, 'square', 0.1);
   playerReset();
   arenaSweep();
@@ -332,7 +299,6 @@ function playerReset() {
   player.isGiant = false;
   player.isDeformed = false;
 
-  // Sorteia Desafios
   const rand = Math.random();
   if (rand < 0.15) player.isDrunk = true;
   else if (rand >= 0.15 && rand < 0.30) player.isInverted = true;
@@ -409,15 +375,11 @@ function arenaSweep() {
       playSound(800 + clearedLines * 100, 'square', 0.2);
     }
   }
-
-  if (clearedLines > 0) {
-    triggerShake();
-  }
 }
 
 function startLevelTimer() {
   clearInterval(timerInterval);
-  levelTimer = 15;
+  levelTimer = 30; // Atualizado para 30 segundos
   document.getElementById('timer').innerText = levelTimer;
 
   timerInterval = setInterval(() => {
@@ -426,10 +388,9 @@ function startLevelTimer() {
     document.getElementById('timer').innerText = levelTimer;
 
     if (levelTimer <= 0) {
-      levelTimer = 15;
+      levelTimer = 30;
       player.level++;
       playSound(1000, 'sine', 0.3);
-      triggerShake();
     }
   }, 1000);
 }
@@ -482,7 +443,6 @@ function gameOver() {
   player.isPlaying = false;
   playSound(100, 'sawtooth', 0.6);
   clearInterval(timerInterval);
-  triggerShake();
   saveHighScore(player.score);
   alert(`Fim de Jogo! Pontuação final: ${player.score}`);
 }
@@ -494,7 +454,6 @@ function startGame() {
     return;
   }
 
-  resizeCanvas();
   arena.forEach(row => row.fill(0));
   particles = [];
   player.score = 0;
@@ -527,10 +486,7 @@ document.addEventListener('keydown', event => {
   }
 });
 
-window.addEventListener('resize', resizeCanvas);
-
 // Inicialização
-resizeCanvas();
 renderHighScores();
 
 function update(time = 0) {

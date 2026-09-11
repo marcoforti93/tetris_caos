@@ -17,12 +17,12 @@ body {
 
 .game-container {
   display: flex;
-  gap: 8px;
+  gap: 15px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100vw;
   height: 100vh;
-  padding: 8px;
+  padding: 10px;
   background: radial-gradient(circle, #101026 0%, #030307 100%);
 }
 
@@ -30,16 +30,15 @@ body {
   background: rgba(255, 255, 255, 0.04);
   border: 2px solid #ff007f;
   box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
-  padding: 10px;
+  padding: 12px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: 175px;
-  min-width: 175px;
-  height: 98vh;
+  width: 180px;
+  min-width: 180px;
+  height: 580px;
   justify-content: space-between;
-  z-index: 2;
 }
 
 .header-box {
@@ -96,7 +95,6 @@ h1, h2, h3 {
   font-weight: bold;
 }
 
-/* Status e Animações de Efeitos */
 #status-effect {
   font-weight: bold;
   padding: 2px 4px;
@@ -129,8 +127,8 @@ h1, h2, h3 {
 }
 
 .canvas-wrapper {
-  flex: 1;
-  height: 98vh;
+  width: 566px;
+  height: 566px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -138,25 +136,13 @@ h1, h2, h3 {
   border: 3px solid #00f0ff;
   border-radius: 8px;
   background-color: #000;
-  overflow: hidden;
   position: relative;
-  transition: transform 0.05s ease-in-out;
-}
-
-.shake {
-  animation: shakeAnim 0.15s cubic-bezier(.36,.07,.19,.97) both;
-}
-
-@keyframes shakeAnim {
-  10%, 90% { transform: translate3d(-2px, 2px, 0); }
-  20%, 80% { transform: translate3d(4px, -3px, 0); }
-  30%, 50%, 70% { transform: translate3d(-6px, 4px, 0); }
-  40%, 60% { transform: translate3d(6px, -2px, 0); }
 }
 
 #tetris {
+  width: 560px;
+  height: 560px;
   display: block;
-  margin: 0 auto;
 }
 
 button {
